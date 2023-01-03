@@ -1,9 +1,7 @@
-const { removeListener } = require("../config/db_config");
-const { param } = require("../controller/router");
-const role = require("../models/roles");
+const status = require("../models/status");
 
-const getDataRole = (req, res) => {
-  role.getRoles((results) => {
+const getallData = (req, res) => {
+  status.get((results) => {
     if (!results[0]) {
       return res.status(400).json({ message: "Data is Empty" });
     } else {
@@ -12,9 +10,9 @@ const getDataRole = (req, res) => {
   });
 };
 
-const addtoRole = (req, res) => {
+const add_status = (req, res) => {
   let data = req.body;
-  role.addRoles(data, (results) => {
+  status.add(data, (results) => {
     if (!results) {
       res.status(406).json({ Error });
     } else {
@@ -23,9 +21,9 @@ const addtoRole = (req, res) => {
   });
 };
 
-const updateRoles = (req, res) => {
+const update_status = (req, res) => {
   let data = req.body;
-  role.updates(data, req.params.id, (results) => {
+  status.update(data, req.params.id, (results) => {
     if (!results) {
       return res.json(Error);
     } else {
@@ -34,4 +32,4 @@ const updateRoles = (req, res) => {
   });
 };
 
-module.exports = { getDataRole, addtoRole, updateRoles};
+module.exports = { getallData, add_status, update_status };

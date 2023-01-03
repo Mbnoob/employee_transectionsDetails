@@ -1,9 +1,9 @@
 const myconnections = require("../config/db_config");
 
-const role = () => {};
+const status = () => {};
 
-role.getRoles = (cb) => {
-  myconnections.query("SELECT * FROM `roles`", (err, results) => {
+status.get = (cb) => {
+  myconnections.query("SELECT * FROM `statuses`", (err, results) => {
     if (err) {
       cb(err);
     } else {
@@ -12,10 +12,10 @@ role.getRoles = (cb) => {
   });
 };
 
-role.addRoles = (data, cb) => {
+status.add = (data, cb) => {
   myconnections.query(
-    "INSERT INTO `roles`( `title`) VALUES (?)",
-    [data.title],
+    "INSERT INTO `statuses`(`statues`) VALUES (?)",
+    [data.statues],
     (err, results) => {
       if (err) {
         cb({ status: 406, message: err.sqlMessage });
@@ -26,10 +26,10 @@ role.addRoles = (data, cb) => {
   );
 };
 
-role.updates = (data, id, cb) => {
+status.update = (data, id, cb) => {
   myconnections.query(
-    "UPDATE `roles` SET `title`= ?,`updated_at`= CURRENT_TIMESTAMP WHERE id =?",
-    [data.title, id],
+    "UPDATE `statuses` SET `statues`= ?,`updated_at`=CURRENT_TIMESTAMP WHERE id = ?",
+    [data.statues, id],
     (err, results) => {
       if (results.affectedRows === 0) {
         return cb({ message: "User Not Exist in Database" });
@@ -42,5 +42,4 @@ role.updates = (data, id, cb) => {
     }
   );
 };
-
-module.exports = role;
+module.exports = status;
