@@ -12,19 +12,19 @@ employee.findAll = (cb) => {
   });
 };
 
-employee.add = (data, cb) => {
+employee.add = (values, cb) => {
   myconnections.query(
-    "INSERT INTO `employees`(`first_name`,`last_name`,`dob`,`address`,`gender`,`email_id`,`phone_number`,`passwords`,`is_online`) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)",
+    "INSERT INTO `employees`(`first_name`,`last_name`,`dob`,`address`,`gender`,`email`,`phone_number`,`passwords`,`is_online`) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)",
     [
-      data.first_name,
-      data.last_name,
-      data.dob,
-      data.address,
-      data.gender,
-      data.email_id,
-      data.phone_number,
-      data.passwords,
-      data.is_online,
+      values.first_name,
+      values.last_name,
+      values.dob,
+      values.address,
+      values.gender,
+      values.email,
+      values.phone_number,
+      values.passwords,
+      values.is_online,
     ],
     (err, results) => {
       if (err) {
@@ -37,20 +37,10 @@ employee.add = (data, cb) => {
 };
 
 employee.update = (data, id, cb) => {
+  const parameters = [Object.values(data), id];
   myconnections.query(
-    "UPDATE `employees` SET `first_name`= ?,`last_name`= ?,`dob`= ?,`address`= ?,`gender`= ?,`email_id`= ?,`phone_number`= ?,`passwords`= ?,`is_online`= ?, `updated_at`= CURRENT_TIMESTAMP WHERE id = ?",
-    [
-      data.first_name,
-      data.last_name,
-      data.dob,
-      data.address,
-      data.gender,
-      data.email_id,
-      data.phone_number,
-      data.passwords,
-      data.is_online,
-      id,
-    ],
+    "Update `employees` SET " + Object.keys(data).map((key) => `${key} = ?`).join(", ") + ", `updated_at`= CURRENT_TIMESTAMP " + " WHERE id = ?",
+    parameters,
     (err, results) => {
       if (results.affectedRows === 0) {
         return cb({ message: "User Not Exist in Database" });

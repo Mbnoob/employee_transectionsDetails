@@ -20,43 +20,51 @@ const {
   update_status,
 } = require("../users/statusParts");
 
+const { userLogin } = require("../users/userLogin");
+
+const { checkToken } = require("../auth/validation");
+
+const { isAdmin } = require("../auth/validation");
+
 const express = require("express");
 const router = express.Router();
 
 //--------------🎇Empolyee 🎆--------------
 
-router.get("/get", getAll);
+router.get("/get", checkToken, getAll);
 
 router.post("/post", addData);
 
 router.put("/put/:id", updateData);
 
-router.put("/delete/:id", deleteUsers);
+router.put("/delete/:id", checkToken, deleteUsers);
 
 //-----------🎄Roles🎍--------------------
 
-router.get("/getall", getDataRole);
+router.get("/getall", checkToken, getDataRole);
 
-router.post("/addrole", addtoRole);
+router.post("/addrole", checkToken, addtoRole);
 
-router.put("/updaterole/:id", updateRoles);
+router.put("/updaterole/:id", checkToken, updateRoles);
 
 //-----------✨Ttansections🎊----------------
 
-router.get("/get_all", get_all);
+router.get("/get_all", checkToken, get_all);
 
-router.post("/addtrans", add_data);
+router.post("/addtrans", checkToken, add_data);
 
-router.put("/updatetrans/:id", update_data);
+router.put("/updatetrans/:id", checkToken, update_data);
 
-router.put("/deletetrans/:id", delete_data);
+router.put("/deletetrans/:id", checkToken, delete_data);
 
 //-----------✨Status🎊----------------
 
-router.get("/getallData", getallData);
+router.get("/getallData", checkToken, getallData);
 
-router.post("/add_status", add_status);
+router.post("/add_status", checkToken, add_status);
 
-router.put("/update_status/:id", update_status);
+router.put("/update_status/:id", checkToken, update_status);
+
+router.post("/emplogin", userLogin);
 
 module.exports = router;

@@ -8,6 +8,7 @@ app.use("/employee", router);
 app.use("/roles", router);
 app.use("/transactions", router);
 app.use("/status", router);
+app.use("/", router);
 
 app.listen(process.env.PORT, (err) => {
   if (!err) {
