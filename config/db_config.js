@@ -1,3 +1,5 @@
+// Create a Database Connections.
+
 const mysql = require("mysql");
 
 const myconnections = mysql.createConnection({
@@ -16,4 +18,4 @@ myconnections.connect((err) => {
   }
 });
 
-module.exports = myconnections;
+module.exports = myconnections; // Exports The Files.

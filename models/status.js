@@ -1,8 +1,9 @@
-const myconnections = require("../config/db_config");
+const myconnections = require("../config/db_config"); // Import Database From (config/db_config).
 
 const status = () => {};
 
 status.get = (cb) => {
+   //Define SQL Query.
   myconnections.query("SELECT * FROM `statuses`", (err, results) => {
     if (err) {
       cb(err);
@@ -12,10 +13,11 @@ status.get = (cb) => {
   });
 };
 
-status.add = (data, cb) => {
+status.add = (status_valid, cb) => {
   myconnections.query(
+     //Define SQL Query.
     "INSERT INTO `statuses`(`statues`) VALUES (?)",
-    [data.statues],
+    [status_valid.statues],
     (err, results) => {
       if (err) {
         cb({ status: 406, message: err.sqlMessage });
@@ -26,10 +28,11 @@ status.add = (data, cb) => {
   );
 };
 
-status.update = (data, id, cb) => {
+status.update = (status_valid, id, cb) => {
   myconnections.query(
+     //Define SQL Query.
     "UPDATE `statuses` SET `statues`= ?,`updated_at`=CURRENT_TIMESTAMP WHERE id = ?",
-    [data.statues, id],
+    [status_valid.statues, id],
     (err, results) => {
       if (results.affectedRows === 0) {
         return cb({ message: "User Not Exist in Database" });
@@ -42,4 +45,5 @@ status.update = (data, id, cb) => {
     }
   );
 };
-module.exports = status;
+
+module.exports = status; // Exports The Files.

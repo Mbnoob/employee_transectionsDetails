@@ -1,5 +1,5 @@
 const joi = require("joi");
-
+// Validations
 const empSchema = joi.object({
   first_name: joi.string().required(),
   last_name: joi.string().required(),
@@ -31,4 +31,4 @@ const empSchema = joi.object({
   is_online: joi.string().valid("yes", "no").required(),
 });
 
-module.exports = { empSchema };
+module.exports = { empSchema }; // Exports Files.

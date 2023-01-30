@@ -1,8 +1,9 @@
-const myconnections = require("../config/db_config");
+const myconnections = require("../config/db_config"); // Import Database From (config/db_config).
 
 const role = () => {};
 
 role.getRoles = (cb) => {
+  // Define SQL Query.
   myconnections.query("SELECT * FROM `roles`", (err, results) => {
     if (err) {
       cb(err);
@@ -12,11 +13,12 @@ role.getRoles = (cb) => {
   });
 };
 
-role.addRoles = (data, cb) => {
+role.addRoles = (values, cb) => {
+  let sql = "INSERT INTO `roles`( `title`) VALUES (?)" // Define SQL Query.
   myconnections.query(
-    "INSERT INTO `roles`( `title`) VALUES (?)",
-    [data.title],
-    (err, results) => {
+    sql,
+    [values.title],
+    (err,results) => {
       if (err) {
         cb({ status: 406, message: err.sqlMessage });
       } else {
@@ -24,15 +26,17 @@ role.addRoles = (data, cb) => {
       }
     }
   );
+  console.log(sql)
 };
 
-role.updates = (data, id, cb) => {
+role.updates = (updateRole_valid, id, cb) => {
   myconnections.query(
+    // Define SQL Query.
     "UPDATE `roles` SET `title`= ?,`updated_at`= CURRENT_TIMESTAMP WHERE id =?",
-    [data.title, id],
+    [updateRole_valid.title, id],
     (err, results) => {
       if (results.affectedRows === 0) {
-        return cb({ message: "User Not Exist in Database" });
+        return cb({ message: "Id is Invalid or Not Exist in Database" });
       }
       if (err) {
         return cb({ status: 404, err });
@@ -43,4 +47,4 @@ role.updates = (data, id, cb) => {
   );
 };
 
-module.exports = role;
+module.exports = role; //Exports The Files.

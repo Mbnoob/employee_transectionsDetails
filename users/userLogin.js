@@ -1,6 +1,6 @@
-const login = require("../models/login");
-const { sign } = require("jsonwebtoken");
-const { compareSync } = require("bcrypt");
+const login = require("../models/login"); // Import From (models/login).
+const { sign } = require("jsonwebtoken"); // Json Web Token 
+const { compareSync } = require("bcrypt"); // Compare Passwords.
 
 const userLogin = (req, res) => {
   let values = req.body;
@@ -8,9 +8,9 @@ const userLogin = (req, res) => {
     if (!response[0]) {
       return res.json({ message: "Invalid Email-id" });
     }
-    let result = compareSync(values.passwords, response[0].passwords);
+    let result = compareSync(values.passwords, response[0].passwords); // Compare Passwords.
     if (result) {
-      let jsonwebtoken = sign({ result: response }, process.env.JWT_SECRET, {
+      let jsonwebtoken = sign({ result: response }, process.env.JWT_SECRET, {    // Creating JWT Tokens
         expiresIn: process.env.JWT_EXPAIRED,
       });
       return res.json({
@@ -24,4 +24,4 @@ const userLogin = (req, res) => {
   });
 };
 
-module.exports = { userLogin };
+module.exports = { userLogin }; // Exports Files.

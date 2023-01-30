@@ -1,8 +1,9 @@
-const myconnections = require("../config/db_config");
+const myconnections = require("../config/db_config"); // Import Database From (config/db_config).
 
 const transactions = () => {};
 
 transactions.get = (cb) => {
+  //Define SQL Query.
   myconnections.query("SELECT * FROM `transactions`", (err, results) => {
     if (err) {
       cb(err);
@@ -12,15 +13,16 @@ transactions.get = (cb) => {
   });
 };
 
-transactions.add = (data, cb) => {
+transactions.add = (transections_valid, cb) => {
   myconnections.query(
+    //Define SQL Query.
     "INSERT INTO `transactions`(`emp_id`, `amounts`, `types`, `payments_date`, `current_status_id`) VALUES (?, ?, ?, ?, ?)",
     [
-      data.emp_id,
-      data.amounts,
-      data.types,
-      data.payments_date,
-      data.current_status_id,
+      transections_valid.emp_id,
+      transections_valid.amounts,
+      transections_valid.types,
+      transections_valid.payments_date,
+      transections_valid.current_status_id,
     ],
     (err, results) => {
       if (err) {
@@ -33,16 +35,13 @@ transactions.add = (data, cb) => {
 };
 
 transactions.update = (data, id, cb) => {
+  const parameters = [Object.values(data), id]; //💥 Click Here👉(https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_objects/Object/values).
   myconnections.query(
-    "UPDATE `transactions` SET `emp_id`=?,`amounts`= ?,`types`=?,`payments_date`=?,`current_status_id`=?,`updated_at`= CURRENT_TIMESTAMP WHERE id =?",
-    [
-      data.emp_id,
-      data.amounts,
-      data.types,
-      data.payments_date,
-      data.current_status_id,
-      id,
-    ],
+    //Define SQL Query.
+    "Update `transactions` SET " + Object.keys(data).map((key) => `${key} = ?`).join(", ") + ", `updated_at`= CURRENT_TIMESTAMP " + " WHERE id = ?",
+    //💥 Click Here(https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/keys).
+    //💥 What Is MAP👉(https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map).
+    parameters,
     (err, results) => {
       if (results.affectedRows === 0) {
         return cb({ message: "User Not Exist in Database" });
@@ -58,6 +57,7 @@ transactions.update = (data, id, cb) => {
 
 transactions.delete = (id, res) => {
   myconnections.query(
+    //Define SQL Query.
     "UPDATE `transactions` SET `is_deleted`='true',`deleted_at`=CURRENT_TIMESTAMP,`deleted_by`=CURRENT_USER,`updated_at`= CURRENT_TIMESTAMP WHERE id =?",
     [id],
     (err, results) => {
@@ -73,4 +73,4 @@ transactions.delete = (id, res) => {
   );
 };
 
-module.exports = transactions;
+module.exports = transactions; // Exports The Files.

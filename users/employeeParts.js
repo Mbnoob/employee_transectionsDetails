@@ -1,7 +1,9 @@
-const employee = require("../models/employee");
-const { genSaltSync, hashSync } = require("bcrypt");
-const { empSchema } = require("../validations/userValidations"); //validations
+const employee = require("../models/employee"); // Imports Form (models/employee).
+const { genSaltSync, hashSync } = require("bcrypt"); // Import (Bcrypt is a password hashing function) .
+const { empSchema } = require("../validations/userValidations"); // Imports From (validations/userValidations) validations.
 const joi = require("joi");
+
+//🔅Starting The Part of Creating Models🔆
 
 const getAll = (req, res) => {
   employee.findAll((results) => {
@@ -16,10 +18,10 @@ const getAll = (req, res) => {
 const addData = async (req, res) => {
   try {
     const values = await empSchema.validateAsync(req.body, {
-      abortEarly: false
+      abortEarly: false,
     });
-    const salt = genSaltSync(10);
-    values.passwords = hashSync(values.passwords, salt);
+    const salt = genSaltSync(10); // Generating salts Rounds.
+    values.passwords = hashSync(values.passwords, salt); // Password Hash Done
     employee.add(values, (results) => {
       if (!results) {
         res.status(405).json({ Error });
@@ -38,10 +40,11 @@ const addData = async (req, res) => {
 
 const updateData = async (req, res) => {
   let data = [];
+  // When User need to Update a specifies data, it can Update that specifies fields at a time 👇.
 
-  // First Name validation goes here
+  // First Name validation goes here 👇
   const firstName_validations = joi.object({
-    first_name: joi.string().min(3).max(10).required(),
+    first_name: joi.string().min(3).max(10).required(), // validations
   });
   if (req.body.hasOwnProperty("first_name")) {
     try {
@@ -56,9 +59,9 @@ const updateData = async (req, res) => {
     }
   }
 
-  // Last Name Validations Gose here
+  // Last Name Validations Gose here 👇
   const lastName_validation = joi.object({
-    last_name: joi.string().min(3).max(10).required(),
+    last_name: joi.string().min(3).max(10).required(), // validations
   });
   if (req.body.hasOwnProperty("last_name")) {
     try {
@@ -73,9 +76,9 @@ const updateData = async (req, res) => {
     }
   }
 
-  //Date of Barth Validations Gose here
+  //Date of Barth Validations Gose here 👇
   const dob_validations = joi.object({
-    dob: joi.date().iso().required(),
+    dob: joi.date().iso().required(), // validations
   });
   if (req.body.hasOwnProperty("dob")) {
     try {
@@ -90,9 +93,9 @@ const updateData = async (req, res) => {
     }
   }
 
-  // Address Validations Gose Here
+  // Address Validations Gose Here 👇
   const address_validation = joi.object({
-    address: joi.string().required(),
+    address: joi.string().required(), // validations
   });
   if (req.body.hasOwnProperty("address")) {
     try {
@@ -107,10 +110,10 @@ const updateData = async (req, res) => {
     }
   }
 
-  // Gender Validations Gose Here
+  // Gender Validations Gose Here 👇
   const gender_validation = joi.object({
     gender: joi.string().required().valid("male", "female"),
-  });
+  }); // validations
   if (req.body.hasOwnProperty("gender")) {
     try {
       let gender_valid = await gender_validation.validateAsync(req.body);
@@ -124,12 +127,12 @@ const updateData = async (req, res) => {
     }
   }
 
-  // Email Validations Gose Here
+  // Email Validations Gose Here 👇
   const email_validations = joi.object({
     email: joi
       .string()
       .lowercase()
-      .regex(/^[\w\.]+@([\w-]+\.)+[\w-]{2,4}$/)
+      .regex(/^[\w\.]+@([\w-]+\.)+[\w-]{2,4}$/) // validations
       .required()
       .messages({
         "string.pattern.base": `Email Can't match This required Pattern`,
@@ -148,11 +151,11 @@ const updateData = async (req, res) => {
     }
   }
 
-  // Phone Number validations Gose Here
+  // Phone Number validations Gose Here 👇
   const phoneNo_validation = joi.object({
     phone_number: joi
       .string()
-      .regex(/^[0-9]{10}$/)
+      .regex(/^[0-9]{10}$/) // validations
       .required()
       .messages({
         "string.pattern.base": `Phone-number Must At last 10 Digit Longs`,
@@ -171,11 +174,11 @@ const updateData = async (req, res) => {
     }
   }
 
-  //Passwords Validations Gose Here
+  //Passwords Validations Gose Here 👇
   const password_validation = joi.object({
     passwords: joi
       .string()
-      .regex(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/)
+      .regex(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/) // validations
       .required()
       .messages({
         "string.pattern.base": `password Can't Match Required Patterns or minimum 8 Character Longs`,
@@ -195,9 +198,9 @@ const updateData = async (req, res) => {
     }
   }
 
-  // Is Online Validations Gose Here
+  // Is Online Validations Gose Here 👇
   const isOnline_validations = joi.object({
-    is_online: joi.string().valid("yes", "no").required(),
+    is_online: joi.string().valid("yes", "no").required(), // validations
   });
   if (req.body.hasOwnProperty("is_online")) {
     try {
@@ -236,4 +239,4 @@ const deleteUsers = (req, res) => {
   });
 };
 
-module.exports = { getAll, addData, updateData, deleteUsers };
+module.exports = { getAll, addData, updateData, deleteUsers }; // Exports All The Given Files.
